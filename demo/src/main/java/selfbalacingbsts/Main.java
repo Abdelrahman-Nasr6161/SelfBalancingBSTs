@@ -1,4 +1,4 @@
-package sbt;
+package selfbalacingbsts;
 
 public class Main {
     public static void main(String[] args) {

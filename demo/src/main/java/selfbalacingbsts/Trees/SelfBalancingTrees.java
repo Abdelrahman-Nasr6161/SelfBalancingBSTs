@@ -1,4 +1,4 @@
-package sbt.Trees;
+package selfbalacingbsts.Trees;
 
 public interface SelfBalancingTrees {
 
