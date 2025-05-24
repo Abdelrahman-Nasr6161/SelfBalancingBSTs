@@ -22,9 +22,9 @@ public class Main {
 
         switch (mainChoice) {
             case 1:
-                throw new UnsupportedOperationException("not implemented yet");
-            // tree = new AVLTree();
-            // break;
+                // throw new UnsupportedOperationException("not implemented yet");
+                tree = new AVLTree();
+                break;
 
             case 2:
                 tree = new RedBlackTree();

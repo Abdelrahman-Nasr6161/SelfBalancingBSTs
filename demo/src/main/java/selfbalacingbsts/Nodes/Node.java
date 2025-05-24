@@ -16,6 +16,7 @@ public class Node {
     private String word;
     private Node parent;
     private Color color;
+    public int height;
     public Node(String word)
     {
         this.left = null;
@@ -23,6 +24,7 @@ public class Node {
         this.word = word;
         this.color = Color.RED;
         this.parent = null;
+        this.height = 1;
     }
     public Node(String word , Node parent)
     {
