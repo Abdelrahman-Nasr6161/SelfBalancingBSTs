@@ -184,12 +184,20 @@ public class RedBlackTree implements SelfBalancingTrees {
 
     public void batchInsert(String path) {
         try (Scanner scanner = new Scanner(new File(path))) {
+            int newEntries = 0;
+            int existingEntries = 0;
             while (scanner.hasNextLine()) {
                 String word = scanner.nextLine().trim();
                 if (!word.isEmpty()) {
-                    insert(word);
+                    boolean newEntry = insert(word);
+                    if (newEntry)
+                        newEntries++;
+                    else
+                        existingEntries++;
                 }
             }
+            System.out.println("Inserted " + newEntries + " entries in the tree");
+            System.out.println(existingEntries + " entries already exist in the tree");
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + path);
         }
@@ -197,12 +205,20 @@ public class RedBlackTree implements SelfBalancingTrees {
 
     public void batchDelete(String path) {
         try (Scanner scanner = new Scanner(new File(path))) {
+            int deletedEntries = 0;
+            int nonExistingEntries = 0;
             while (scanner.hasNextLine()) {
                 String word = scanner.nextLine().trim();
                 if (!word.isEmpty()) {
-                    delete(word);
+                    boolean deleted = delete(word);
+                    if (deleted)
+                        deletedEntries++;
+                    else
+                        nonExistingEntries++;
                 }
             }
+            System.out.println("Deleted " + deletedEntries + " entries from the tree");
+            System.out.println(nonExistingEntries + " entries don't exist in the tree");
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + path);
         }
