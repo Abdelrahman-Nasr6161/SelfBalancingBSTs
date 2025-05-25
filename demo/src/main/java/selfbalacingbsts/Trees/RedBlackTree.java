@@ -23,14 +23,19 @@ public class RedBlackTree implements SelfBalancingTrees {
         this.root.setColor(Color.BLACK);
     }
 
-    public void insert(String word) {
+    public boolean insert(String word) {
+        // Check if word already exists
+        if (search(word)) {
+            return false;
+        }
+
         Node newNode = new Node(word);
         newNode.setColor(Color.RED);
 
         if (root == null) {
             root = newNode;
             root.setColor(Color.BLACK);
-            return;
+            return true;
         }
 
         Node parent = null;
@@ -54,6 +59,7 @@ public class RedBlackTree implements SelfBalancingTrees {
         }
 
         fixInsert(newNode);
+        return true;
     }
 
     private void fixInsert(Node node) {
@@ -134,10 +140,10 @@ public class RedBlackTree implements SelfBalancingTrees {
         y.setParent(x);
     }
 
-    public void delete(String word) {
+    public boolean delete(String word) {
         Node node = searchNode(root, word.hashCode());
         if (node == null)
-            return;
+            return false;
 
         Node y = node;
         Node x;
@@ -173,6 +179,7 @@ public class RedBlackTree implements SelfBalancingTrees {
         if (originalColor == Color.BLACK && x != null) {
             fixDelete(x);
         }
+        return true;
     }
 
     public void batchInsert(String path) {
@@ -204,11 +211,13 @@ public class RedBlackTree implements SelfBalancingTrees {
     public boolean search(String word) {
         return searchNode(root, word.hashCode()) != null;
     }
+
     public void displayTree() {
-    System.out.println("Tree (in-order):");
-    inOrderTraversal(root);
-    System.out.println();
-}
+        System.out.println("Tree (in-order):");
+        inOrderTraversal(root);
+        System.out.println();
+    }
+
     private void inOrderTraversal(Node node) {
         if (node != null) {
             inOrderTraversal(node.getLeft());
