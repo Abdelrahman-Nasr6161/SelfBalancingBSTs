@@ -1,9 +1,9 @@
 package selfbalacingbsts.Trees;
 
 public interface SelfBalancingTrees {
-    public void insert(String word);
+    public boolean insert(String word);
 
-    public void delete(String word);
+    public boolean delete(String word);
 
     public void batchInsert(String path);
 

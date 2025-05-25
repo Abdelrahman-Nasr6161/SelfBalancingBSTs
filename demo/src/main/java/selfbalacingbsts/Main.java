@@ -56,8 +56,7 @@ public class Main {
                     // throw new UnsupportedOperationException("insert should be boolean");
                     System.out.println("Enter the string to insert:");
                     str = scanner.nextLine();
-                    boolean isInserted = true;
-                    tree.insert(str);
+                    boolean isInserted = tree.insert(str);
                     if (isInserted) {
                         System.out.println("String inserted succefully!\n");
                     } else {
@@ -70,8 +69,7 @@ public class Main {
                     // throw new UnsupportedOperationException("delete should be boolean");
                     System.out.println("Enter the string to delete:");
                     str = scanner.nextLine();
-                    boolean isDeleted = true;
-                    tree.delete(str);
+                    boolean isDeleted = tree.delete(str);
                     if (isDeleted) {
                         System.out.println("String deleted succefully!\n");
                     } else {
