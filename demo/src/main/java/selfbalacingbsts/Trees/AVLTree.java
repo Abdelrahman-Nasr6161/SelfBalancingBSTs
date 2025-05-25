@@ -30,11 +30,11 @@ public class AVLTree implements SelfBalancingTrees {
         return 1 + Math.max(calcHeight(node.getLeft()), calcHeight(node.getRight()));
     }
 
-    public void insert(String word){
+    public boolean insert(String word){
         Node newNode = new Node(word);
         if(root == null){
             root = newNode;
-            return;
+            return true;
         }
         Node parent = null;
         Node current = root;
@@ -50,7 +50,7 @@ public class AVLTree implements SelfBalancingTrees {
                 current = current.getRight();
             } 
             else {
-                return;
+                return false; 
             }
         }
 
@@ -79,7 +79,7 @@ public class AVLTree implements SelfBalancingTrees {
             } 
             checkNode = checkNode.getParent();
         }
-        return;
+        return true;
 
     }
 
@@ -193,9 +193,9 @@ public class AVLTree implements SelfBalancingTrees {
         return rightNode; 
     }
 
-    public void delete(String word){
+    public boolean delete(String word){
         Node nodeToDelete = searchNode(root, word.hashCode());
-        if(nodeToDelete == null) return;
+        if(nodeToDelete == null) return false;
 
         Node parent = nodeToDelete.getParent();
         Node checkNode = parent;
@@ -263,7 +263,7 @@ public class AVLTree implements SelfBalancingTrees {
             }
             checkNode = checkNode.getParent();
         }
-
+        return true;
     }
 
     public void batchInsert(String path) {
