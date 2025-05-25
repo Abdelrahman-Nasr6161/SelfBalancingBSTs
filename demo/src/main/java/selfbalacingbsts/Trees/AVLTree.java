@@ -339,6 +339,9 @@ public class AVLTree implements SelfBalancingTrees {
     }
 
     public int getHeight(){
+        if(root == null) {
+            return -1;
+        }
         return root.getHeight();
     }
 

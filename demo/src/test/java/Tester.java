@@ -2,6 +2,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import selfbalacingbsts.Trees.AVLTree;
 import selfbalacingbsts.Trees.RedBlackTree;
 
 
@@ -131,5 +132,145 @@ public void testBatchInsertFromDataFile() {
     assertTrue("Tree height too large for 1000 nodes: " + height, height <= 50);
     tree.batchDelete("data.txt");
     assertTrue(tree.getHeight() == 0);
+    }
+
+
+    private AVLTree AVLtree;
+
+    @Before
+    public void AVLsetUp() {
+        AVLtree = new AVLTree();
+    }
+
+    @Test
+    public void AVLtestInsertIntoEmptyTree() {
+        assertTrue(AVLtree.insert("apple"));
+        assertTrue(AVLtree.search("apple"));
+        assertEquals(1, AVLtree.getHeight());
+    }
+
+    @Test
+    public void AVLtestInsertDuplicate() {
+        assertTrue(AVLtree.insert("banana"));
+        assertFalse(AVLtree.insert("banana"));
+        assertEquals(1, AVLtree.getHeight());
+    }
+
+    @Test
+    public void AVLtestMultipleInserts() {
+        assertTrue(AVLtree.insert("dog"));
+        assertTrue(AVLtree.insert("cat"));
+        assertTrue(AVLtree.insert("fish"));
+        assertTrue(AVLtree.search("dog"));
+        assertTrue(AVLtree.search("cat"));
+        assertTrue(AVLtree.search("fish"));
+        assertEquals(1, AVLtree.getHeight());
+    }
+
+    @Test
+    public void AVLtestDelete() {
+        AVLtree.insert("apple");
+        AVLtree.insert("banana");
+        assertTrue(AVLtree.delete("apple"));
+        assertFalse(AVLtree.search("apple"));
+        assertTrue(AVLtree.search("banana"));
+    }
+
+    @Test
+    public void AVLtestDeleteNonExistent() {
+        AVLtree.insert("orange");
+        assertFalse(AVLtree.delete("apple"));
+        assertTrue(AVLtree.search("orange"));
+    }
+
+    @Test
+    public void AVLtestSearchEmptyTree() {
+        assertFalse(AVLtree.search("anything"));
+    }
+
+    @Test
+    public void AVLtestTreeBalance() {
+        // Insert elements that would cause rotations
+        AVLtree.insert("5");
+        AVLtree.insert("3");
+        AVLtree.insert("7");
+        AVLtree.insert("1");
+        AVLtree.insert("4");
+        AVLtree.insert("6");
+        AVLtree.insert("8");
+        // Height should be relatively balanced
+        assertTrue(AVLtree.getHeight() <= 3);
+    }
+
+    @Test
+    public void AVLtestDeleteRoot() {
+        AVLtree.insert("root");
+        AVLtree.insert("left");
+        AVLtree.insert("right");
+        assertTrue(AVLtree.delete("root"));
+        assertFalse(AVLtree.search("root"));
+        assertTrue(AVLtree.search("left"));
+        assertTrue(AVLtree.search("right"));
+    }
+
+    @Test
+    public void AVLtestInsertAndDeleteMany() {
+        String[] words = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"};
+        for (String word : words) {
+            assertTrue(AVLtree.insert(word));
+        }
+        for (String word : words) {
+            assertTrue(AVLtree.delete(word));
+        }
+        for (String word : words) {
+            assertFalse(AVLtree.search(word));
+        }
+    }
+
+
+    @Test
+    public void AVLtestTreeProperties() {
+        AVLtree.insert("50");
+        AVLtree.insert("30");
+        AVLtree.insert("70");
+        AVLtree.insert("20");
+        AVLtree.insert("40");
+        
+        // Test if tree maintains proper height
+        assertTrue(AVLtree.getHeight() >= 2);
+        assertTrue(AVLtree.getHeight() <= 3);
+        
+        // Test search functionality
+        assertTrue(AVLtree.search("50"));
+        assertTrue(AVLtree.search("30"));
+        assertFalse(AVLtree.search("60"));
+    }
+
+
+    @Test
+    public void AVLtestRotation() {
+        AVLtree.insert("10");
+        AVLtree.insert("20");
+        AVLtree.insert("30");
+        assertEquals(1, AVLtree.getHeight());
+    }
+
+
+     @Test
+public void AVLtestBatchInsertFromDataFile() {
+    AVLtree.batchInsert("data.txt");
+    assertTrue(AVLtree.getHeight() > 0); // Ensure tree isn't empty
+    int height = AVLtree.getHeight();
+    assertTrue("Tree height too large for 1000 nodes: " + height, height <= 14);
+}
+
+    @Test
+    public void AVLtestBatchDelete() {
+        AVLtree.batchInsert("data.txt");
+    assertTrue(AVLtree.getHeight() > 0); // Ensure tree isn't empty
+    int height = AVLtree.getHeight();
+    assertTrue("Tree height too large for 1000 nodes: " + height, height <= 50);
+    AVLtree.batchDelete("data.txt");
+    assertTrue(AVLtree.getHeight() == -1);
     }
 }
