@@ -111,9 +111,9 @@ public class Main {
                     break;
 
                 case 6:
-                    throw new UnsupportedOperationException("getSize is not implemented yet.");
-                // System.out.println("Size of the dictionary: " + tree.getSize());
-                // break;
+                    // throw new UnsupportedOperationException("getSize is not implemented yet.");
+                    System.out.println("Size of the dictionary: " + tree.getSize());
+                    break;
 
                 case 7:
                     System.out.println("Height of the backend tree: " + tree.getHeight());

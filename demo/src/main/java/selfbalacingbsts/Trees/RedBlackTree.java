@@ -13,14 +13,20 @@ import selfbalacingbsts.Nodes.Node.Color;
 @Setter
 public class RedBlackTree implements SelfBalancingTrees {
     private Node root;
+    private int size;
 
     public RedBlackTree() {
         this.root = null;
+        this.size = 0;
     }
 
     public RedBlackTree(String word) {
         this.root = new Node(word);
         this.root.setColor(Color.BLACK);
+    }
+
+    public int getSize() {
+        return this.size;
     }
 
     public boolean insert(String word) {
@@ -58,6 +64,7 @@ public class RedBlackTree implements SelfBalancingTrees {
             parent.setRight(newNode);
         }
 
+        size++;
         fixInsert(newNode);
         return true;
     }
@@ -175,7 +182,7 @@ public class RedBlackTree implements SelfBalancingTrees {
             y.getLeft().setParent(y);
             y.setColor(node.getColor());
         }
-
+        size--;
         if (originalColor == Color.BLACK && x != null) {
             fixDelete(x);
         }

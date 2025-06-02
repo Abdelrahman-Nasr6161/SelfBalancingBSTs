@@ -14,4 +14,6 @@ public interface SelfBalancingTrees {
     public void displayTree();
 
     public int getHeight();
+
+    public int getSize();
 }

@@ -1,4 +1,5 @@
 package selfbalacingbsts.Trees;
+
 import selfbalacingbsts.Nodes.Node;
 
 import java.io.File;
@@ -30,9 +31,13 @@ public class AVLTree implements SelfBalancingTrees {
         return 1 + Math.max(calcHeight(node.getLeft()), calcHeight(node.getRight()));
     }
 
-    public boolean insert(String word){
+    public int getSize() {
+        return this.size;
+    }
+
+    public boolean insert(String word) {
         Node newNode = new Node(word);
-        if(root == null){
+        if (root == null) {
             root = newNode;
             return true;
         }
@@ -40,50 +45,50 @@ public class AVLTree implements SelfBalancingTrees {
         Node current = root;
         int hashCode = word.hashCode();
 
-
-        while(current != null) {
+        while (current != null) {
             parent = current;
             if (hashCode < current.getWord().hashCode()) {
                 current = current.getLeft();
-            } 
-            else if (hashCode > current.getWord().hashCode()) {
+            } else if (hashCode > current.getWord().hashCode()) {
                 current = current.getRight();
-            } 
-            else {
-                return false; 
+            } else {
+                return false;
             }
         }
 
         newNode.setParent(parent);
         if (hashCode < parent.getWord().hashCode()) {
             parent.setLeft(newNode);
-        } 
-        else{
+        } else {
             parent.setRight(newNode);
         }
         size++;
 
         Node checkNode = newNode;
-        while(checkNode != null){
-            checkNode.setHeight(1 +  Math.max(calcHeight(checkNode.getLeft()), calcHeight(checkNode.getRight())));
+        while (checkNode != null) {
+            checkNode.setHeight(1 + Math.max(calcHeight(checkNode.getLeft()), calcHeight(checkNode.getRight())));
             int balanceFactor = calcHeight(checkNode.getLeft()) - calcHeight(checkNode.getRight());
-            
-            // System.out.println("+++++Node: " + checkNode.getWord() + " balance factor: " + balanceFactor);
-            // System.out.println("-------Node left height: " + calcHeight(checkNode.getLeft()) + " Node right height: " + calcHeight(checkNode.getRight()) + " balance factor: " + balanceFactor);
-            if(balanceFactor > 1 || balanceFactor < -1) {
-                // System.out.println("+++++Node: " + checkNode.getWord() + " balance factor: " + balanceFactor);
+
+            // System.out.println("+++++Node: " + checkNode.getWord() + " balance factor: "
+            // + balanceFactor);
+            // System.out.println("-------Node left height: " +
+            // calcHeight(checkNode.getLeft()) + " Node right height: " +
+            // calcHeight(checkNode.getRight()) + " balance factor: " + balanceFactor);
+            if (balanceFactor > 1 || balanceFactor < -1) {
+                // System.out.println("+++++Node: " + checkNode.getWord() + " balance factor: "
+                // + balanceFactor);
                 Node balanceNode = treeBalancing(checkNode, balanceFactor);
                 if (balanceNode.getParent() == null) {
                     root = balanceNode;
                 }
-            } 
+            }
             checkNode = checkNode.getParent();
         }
         return true;
 
     }
 
-    public Node treeBalancing(Node node, int balanceFactor){
+    public Node treeBalancing(Node node, int balanceFactor) {
         int leftBalance = 0;
         int rightBalance = 0;
 
@@ -96,152 +101,155 @@ public class AVLTree implements SelfBalancingTrees {
 
         if (balanceFactor > 1 && leftBalance >= 0) {
             // System.out.println("case LLR");
-            return LLR(node); }
+            return LLR(node);
+        }
 
         else if (balanceFactor < -1 && rightBalance <= 0) {
             // System.out.println("case RRR");
-            return  RRR(node); }
+            return RRR(node);
+        }
 
-        else if (balanceFactor > 1 && leftBalance < 0) { 
+        else if (balanceFactor > 1 && leftBalance < 0) {
             // System.out.println("case LRR");
-            node.setLeft(RRR(node.getLeft())); 
-            return LLR(node); 
-        } 
+            node.setLeft(RRR(node.getLeft()));
+            return LLR(node);
+        }
 
         else if (balanceFactor < -1 && rightBalance > 0) {
             // System.out.println("case RLR");
-            node.setRight(LLR(node.getRight())); 
-            return RRR(node); 
-        } 
+            node.setRight(LLR(node.getRight()));
+            return RRR(node);
+        }
         return node;
     }
 
-    public Node LLR(Node node){
+    public Node LLR(Node node) {
 
         // System.out.println("LLR");
-        if(node == null || node.getLeft() == null) return node;
+        if (node == null || node.getLeft() == null)
+            return node;
 
-        Node leftNode = node.getLeft(); 
-        Node rightTree = leftNode.getRight(); 
+        Node leftNode = node.getLeft();
+        Node rightTree = leftNode.getRight();
         Node parent = node.getParent();
 
-        
-        node.setLeft(rightTree); 
+        node.setLeft(rightTree);
 
-        if(rightTree != null) rightTree.setParent(node);
-        leftNode.setRight(node); 
+        if (rightTree != null)
+            rightTree.setParent(node);
+        leftNode.setRight(node);
         leftNode.setParent(parent);
         node.setParent(leftNode);
         if (parent != null) {
             if (node.getWord().hashCode() < parent.getWord().hashCode()) {
                 parent.setLeft(leftNode);
-            } 
-            else {
+            } else {
                 parent.setRight(leftNode);
             }
             parent.setHeight(1 + Math.max(calcHeight(parent.getLeft()), calcHeight(parent.getRight())));
-            // System.out.println("node: " + node.getWord() + "node parent:" + node.getParent().getWord() + " leftNode: " + leftNode.getWord() + "leftNode parent:" + leftNode.getParent().getWord());
+            // System.out.println("node: " + node.getWord() + "node parent:" +
+            // node.getParent().getWord() + " leftNode: " + leftNode.getWord() + "leftNode
+            // parent:" + leftNode.getParent().getWord());
 
-            }
-        else {
+        } else {
             root = leftNode;
         }
-        // System.out.println("node: " + node.getParent().getWord() + " leftNode: " + leftNode.getWord());
+        // System.out.println("node: " + node.getParent().getWord() + " leftNode: " +
+        // leftNode.getWord());
 
         node.setHeight(1 + Math.max(calcHeight(node.getLeft()), calcHeight(node.getRight())));
         leftNode.setHeight(1 + Math.max(calcHeight(leftNode.getLeft()), calcHeight(leftNode.getRight())));
-        
+
         return leftNode;
     }
 
-    public Node RRR(Node node){
+    public Node RRR(Node node) {
 
         // System.out.println("RRR");
-        if(node == null || node.getRight() == null) return node;
+        if (node == null || node.getRight() == null)
+            return node;
 
-        Node rightNode = node.getRight(); 
-        Node leftTree = rightNode.getLeft(); 
+        Node rightNode = node.getRight();
+        Node leftTree = rightNode.getLeft();
         Node parent = node.getParent();
 
-        node.setRight(leftTree); 
+        node.setRight(leftTree);
 
-
-        if(leftTree != null) leftTree.setParent(node);
-        rightNode.setLeft(node); 
+        if (leftTree != null)
+            leftTree.setParent(node);
+        rightNode.setLeft(node);
         rightNode.setParent(parent);
         node.setParent(rightNode);
 
         if (parent != null) {
             if (node.getWord().hashCode() < parent.getWord().hashCode()) {
                 parent.setLeft(rightNode);
-            } 
-            else {
+            } else {
                 parent.setRight(rightNode);
             }
-            parent.setHeight(1 + Math.max(calcHeight(parent.getLeft()), calcHeight(parent.getRight()))); // Update the height of the parent node
-            
-        // System.out.println("node: " + node.getWord() + "node parent:" + node.getParent().getWord() + " rightNode: " + rightNode.getWord() + "rightNode parent:" + rightNode.getParent().getWord());
-        } 
-        else {
+            parent.setHeight(1 + Math.max(calcHeight(parent.getLeft()), calcHeight(parent.getRight()))); // Update the
+                                                                                                         // height of
+                                                                                                         // the parent
+                                                                                                         // node
+
+            // System.out.println("node: " + node.getWord() + "node parent:" +
+            // node.getParent().getWord() + " rightNode: " + rightNode.getWord() +
+            // "rightNode parent:" + rightNode.getParent().getWord());
+        } else {
             root = rightNode;
         }
-        
-        // System.out.println("node: " + node.getWord() + " rightNode: " + rightNode.getWord());
+
+        // System.out.println("node: " + node.getWord() + " rightNode: " +
+        // rightNode.getWord());
         node.setHeight(1 + Math.max(calcHeight(node.getLeft()), calcHeight(node.getRight())));
         rightNode.setHeight(1 + Math.max(calcHeight(rightNode.getLeft()), calcHeight(rightNode.getRight())));
-        
-        return rightNode; 
+
+        return rightNode;
     }
 
-    public boolean delete(String word){
+    public boolean delete(String word) {
         Node nodeToDelete = searchNode(root, word.hashCode());
-        if(nodeToDelete == null) return false;
+        if (nodeToDelete == null)
+            return false;
 
         Node parent = nodeToDelete.getParent();
         Node checkNode = parent;
-        
-        if(nodeToDelete.getLeft() == null && nodeToDelete.getRight() == null){
+
+        if (nodeToDelete.getLeft() == null && nodeToDelete.getRight() == null) {
             if (parent == null) {
                 root = null;
-            } 
-            else if (parent.getLeft() == nodeToDelete) {
+            } else if (parent.getLeft() == nodeToDelete) {
                 parent.setLeft(null);
-            } 
-            else {
+            } else {
                 parent.setRight(null);
             }
-        }
-        else if(nodeToDelete.getLeft() == null || nodeToDelete.getRight() == null){
+        } else if (nodeToDelete.getLeft() == null || nodeToDelete.getRight() == null) {
             Node child = (nodeToDelete.getLeft() != null) ? nodeToDelete.getLeft() : nodeToDelete.getRight();
             child.setParent(parent);
             if (parent == null) {
                 root = child;
-            } 
-            else if (parent.getLeft() == nodeToDelete) {
+            } else if (parent.getLeft() == nodeToDelete) {
                 parent.setLeft(child);
-            } 
-            else {
+            } else {
                 parent.setRight(child);
             }
-        }
-        else {
+        } else {
             // Leftmost of the right subtree
             Node grandchild = nodeToDelete.getRight();
-            Node gcsParent = nodeToDelete;     // Grandchild's parent
+            Node gcsParent = nodeToDelete; // Grandchild's parent
             while (grandchild.getLeft() != null) {
                 gcsParent = grandchild;
                 grandchild = grandchild.getLeft();
             }
-            
+
             nodeToDelete.setWord(grandchild.getWord());
-            
+
             if (gcsParent == nodeToDelete) {
                 gcsParent.setRight(grandchild.getRight());
                 if (grandchild.getRight() != null) {
                     grandchild.getRight().setParent(gcsParent);
                 }
-            } 
-            else {
+            } else {
                 gcsParent.setLeft(grandchild.getRight());
                 if (grandchild.getRight() != null) {
                     grandchild.getRight().setParent(gcsParent);
@@ -250,11 +258,11 @@ public class AVLTree implements SelfBalancingTrees {
             checkNode = gcsParent;
         }
         size--;
-        
+
         while (checkNode != null) {
-            checkNode.setHeight(1 + Math.max( calcHeight(checkNode.getLeft()), calcHeight(checkNode.getRight())));
+            checkNode.setHeight(1 + Math.max(calcHeight(checkNode.getLeft()), calcHeight(checkNode.getRight())));
             int balanceFactor = calcHeight(checkNode.getLeft()) - calcHeight(checkNode.getRight());
-            
+
             if (balanceFactor > 1 || balanceFactor < -1) {
                 Node balanceNode = treeBalancing(checkNode, balanceFactor);
                 if (balanceNode.getParent() == null) {
@@ -338,12 +346,11 @@ public class AVLTree implements SelfBalancingTrees {
         }
     }
 
-    public int getHeight(){
-        if(root == null) {
+    public int getHeight() {
+        if (root == null) {
             return -1;
         }
         return root.getHeight();
     }
 
 }
-    
