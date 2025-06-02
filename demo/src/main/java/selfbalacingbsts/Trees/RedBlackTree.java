@@ -35,6 +35,8 @@ public class RedBlackTree implements SelfBalancingTrees {
             return false;
         }
 
+        this.size++;
+
         Node newNode = new Node(word);
         newNode.setColor(Color.RED);
 
@@ -64,7 +66,6 @@ public class RedBlackTree implements SelfBalancingTrees {
             parent.setRight(newNode);
         }
 
-        size++;
         fixInsert(newNode);
         return true;
     }
@@ -152,6 +153,7 @@ public class RedBlackTree implements SelfBalancingTrees {
         if (node == null)
             return false;
 
+        this.size--;
         Node y = node;
         Node x;
         Color originalColor = y.getColor();
@@ -182,7 +184,7 @@ public class RedBlackTree implements SelfBalancingTrees {
             y.getLeft().setParent(y);
             y.setColor(node.getColor());
         }
-        size--;
+
         if (originalColor == Color.BLACK && x != null) {
             fixDelete(x);
         }

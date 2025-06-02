@@ -39,6 +39,7 @@ public class AVLTree implements SelfBalancingTrees {
         Node newNode = new Node(word);
         if (root == null) {
             root = newNode;
+            this.size++;
             return true;
         }
         Node parent = null;
@@ -56,13 +57,14 @@ public class AVLTree implements SelfBalancingTrees {
             }
         }
 
+        this.size++;
+
         newNode.setParent(parent);
         if (hashCode < parent.getWord().hashCode()) {
             parent.setLeft(newNode);
         } else {
             parent.setRight(newNode);
         }
-        size++;
 
         Node checkNode = newNode;
         while (checkNode != null) {
@@ -212,6 +214,8 @@ public class AVLTree implements SelfBalancingTrees {
         if (nodeToDelete == null)
             return false;
 
+        this.size--;
+
         Node parent = nodeToDelete.getParent();
         Node checkNode = parent;
 
@@ -257,7 +261,6 @@ public class AVLTree implements SelfBalancingTrees {
             }
             checkNode = gcsParent;
         }
-        size--;
 
         while (checkNode != null) {
             checkNode.setHeight(1 + Math.max(calcHeight(checkNode.getLeft()), calcHeight(checkNode.getRight())));
